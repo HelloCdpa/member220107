@@ -1,4 +1,5 @@
 package com.icia.member;
+import com.icia.member.dto.MemberDetailDTO;
 import com.icia.member.dto.MemberLoginDTO;
 import com.icia.member.dto.MemberSaveDTO;
 import com.icia.member.repository.MemberRepository;
@@ -89,7 +90,32 @@ public class MemberTest {
 
     }
 
+    @Test
+    @DisplayName("회원 데이터 업데이트")
+    @Transactional
+    @Rollback
+    public void memberUpdateTest(){
+        final String email = "updateEmail";
+        final String password = "updatePw";
+        final String name = "updateName";
+        final String updateName = "Name";
 
+        MemberSaveDTO memberSaveDTO = new MemberSaveDTO(email,password,name);
+        Long memberId = ms.save(memberSaveDTO);
+        MemberDetailDTO memberDetailDTO = ms.findById(memberId);
+        memberDetailDTO.setMemberName(updateName);
+
+        Long UpdateMemberId = ms.update(memberDetailDTO);
+
+        assertThat(ms.findById(UpdateMemberId).getMemberName()).isEqualTo(updateName);
+
+
+
+
+
+
+
+    }
 
 
 
