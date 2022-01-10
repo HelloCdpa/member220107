@@ -3,6 +3,76 @@
 <head>
     <meta charset="UTF-8">
     <title>findAll.html</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script>
+        function detail(memberId){
+            console.log(memberId);
+            // data: {'m_id': m_id },
+            const reqUrl ="/member/"+memberId;
+            $.ajax({
+                type: 'post',
+                url: reqUrl ,
+                dataType:'json',
+                success: function (result){
+                    console.log(result);
+                    let output="";
+                    output += "<table>\n" +
+                        "    <thead>\n" +
+                        "        <tr>\n" +
+                        "            <th>번호</th>\n" +
+                        "            <th>이메일</th>\n" +
+                        "            <th>비밀번호</th>\n" +
+                        "            <th>이름</th>\n" +
+                        "        </tr>\n" +
+                        "    </thead>\n" +
+                        "    <tbody>\n" +
+                        "        <tr>\n" +
+                        "            <td>" + result.memberId + "</td>\n" +
+                        "            <td>" + result.memberEmail + "</td>\n" +
+                        "            <td>" + result.memberPassword + "</td>\n" +
+                        "            <td>" + result.memberName + "</td>\n" +
+                        "        </tr>\n" +
+                        "    </tbody>\n" +
+                        "</table>";
+                    document.getElementById("detail-view").innerHTML = output;
+                },
+                error: function (){
+                    alert('ajax 실패');
+                }
+            })
+        }
+
+    </script>
+
+    <script>
+        function deleteById(memberId){
+        const reqUrl = "/member/" + memberId;
+        console.log(memberId);
+            $.ajax({
+                type: 'delete',
+                url: reqUrl,
+                success: function (){
+                    //삭제를 성공하면 회원 목록 페이지를 다시 요청하도록
+                    alert("삭제가 완료되었습니다.")
+                    location.href='/member/';
+                },
+                error: function(){
+                     alert("오타 찾기")
+                }
+            })
+        }
+        //화살표 함수
+        //함수이름 : deleteFn, 매개변수 : memberId
+        const deleteFn = (memberId) =>{
+            console.log(memberId);
+        }
+        //함수이름 : deleteFn2, 매개변수 없음
+        const deleteFn2 = () => {
+
+        }
+
+    </script>
+
 </head>
 <body>
 <table>
@@ -23,16 +93,21 @@
             <td th:text="${member.memberPassword}">비밀번호</td>
             <td th:text="${member.memberName}">이름</td>
             <td><a th:href="@{|/member/${member.memberId}|}">조회</a></td>
-            <td></td>
+            <td><button th:onclick="detail([[${member.memberId}]])">조회(ajax)</button></td>
+            <td><a th:href="@{|/member/delete/${member.memberId}|}">삭제(get)</a></td>
+            <td>
+                <!--삭제버튼 클릭시 delete 함수호출 함수호출하면서 memberId 넘겨야 함
+                 deleteById 함수() : /member/memberId 주소를 요청하며 요청 메서드는 delete-->
+
+                <button th:onclick="deleteById([[${member.memberId}]])">삭제(delete)</button>
+
+
+            </td>
             <td></td>
         </tr>
     </tbody>
 
 </table>
-
-
-
-
-
+<div id="detail-view"></div>
 </body>
 </html>

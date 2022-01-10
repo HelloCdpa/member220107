@@ -1,5 +1,6 @@
 package com.icia.member.entity;
 
+import com.icia.member.dto.MemberDetailDTO;
 import com.icia.member.dto.MemberSaveDTO;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +15,7 @@ public class MemberEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "member_id")
-    private long id;
+    private Long id;
 
     @Column(length = 50, unique = true)
     private String memberEmail;
@@ -32,6 +33,16 @@ public class MemberEntity {
         memberEntity.setMemberEmail(memberSaveDTO.getMemberEmail());
         memberEntity.setMemberPassword(memberSaveDTO.getMemberPassword());
         memberEntity.setMemberName(memberSaveDTO.getMemberName());
+        return memberEntity;
+    }
+
+    //MemberDetailDTO -> MemberEntity 객체로 변환하기 위한 메서드
+    public static MemberEntity toUpdateMember(MemberDetailDTO memberDetailDTO){
+        MemberEntity memberEntity = new MemberEntity();
+        memberEntity.setId(memberDetailDTO.getMemberId());
+        memberEntity.setMemberEmail(memberDetailDTO.getMemberEmail());
+        memberEntity.setMemberPassword(memberDetailDTO.getMemberPassword());
+        memberEntity.setMemberName(memberDetailDTO.getMemberName());
         return memberEntity;
     }
 
