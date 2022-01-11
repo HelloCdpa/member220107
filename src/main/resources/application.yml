@@ -1,5 +1,5 @@
 server:
-  port: 8092
+  port: 8091
   #DB 접속 정보
 spring:
   datasource:
@@ -14,3 +14,10 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+
+#mybatis 관련설정
+mybatis:
+  #resources/mapper/ 에 있는 모든 xml 파일을 내가 매퍼로 쓸거다.
+  mapper-locations: mapper/*.xml
+  #alias설정
+#  type-aliases-package: com.icia.member.dto

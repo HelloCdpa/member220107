@@ -42,11 +42,16 @@ public class MemberController {
 
     //로그인
     @PostMapping("login")
-    public String login(@ModelAttribute MemberLoginDTO memberLoginDTO, HttpSession session){
+    public String login(@ModelAttribute MemberLoginDTO memberLoginDTO, HttpSession session,
+                        @RequestParam(defaultValue = "/") String redirectURL){
+        System.out.println("MemberController.login");
+        System.out.println("redirectURL = " + redirectURL);
+
         if(ms.login(memberLoginDTO)){
             session.setAttribute(LOGIN_EMAIL, memberLoginDTO.getMemberEmail());
 //            return "redirect:/member/";
-            return "member/mypage";
+//
+            return "redirect:" + redirectURL;
         } else {
             return "member/login";
         }
@@ -114,6 +119,28 @@ public class MemberController {
         Long memberId = ms.update(memberDetailDTO);
         return new ResponseEntity(HttpStatus.OK);
     }
+
+    @GetMapping("logout")
+    public String logout (HttpSession session){
+        session.invalidate();
+        return "redirect:/";
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 }
